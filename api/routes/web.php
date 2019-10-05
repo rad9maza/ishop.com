@@ -15,10 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', 'ProductContoller@index');
-Route::get('/products/create', 'ProductContoller@create');
-Route::post('/products', 'ProductContoller@store');
-Route::get('/products/{id}', 'ProductContoller@show');
-Route::get('/products/{id}/edit', 'ProductContoller@edit');
-Route::put('/products/{id}', 'ProductContoller@update');
-Route::delete('/products/{id}', 'ProductContoller@destroy');
+Route::get('/products', 'ProductContoller@index'); //список
+Route::get('/products/{id}', 'ProductContoller@show'); //один
+Route::post('/products', 'ProductContoller@store'); //создание
+Route::put('/products/{id}', 'ProductContoller@update'); //обновить
+Route::delete('/products/{id}', 'ProductContoller@destroy'); //удалить
+
+Route::get('/categories', 'CategiryController@index'); //список
+Route::get('/categories/{id}', 'CategiryController@show'); //один
