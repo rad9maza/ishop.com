@@ -2,42 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductContoller extends Controller
 {
+
     public function index()
     {
-        dd('1');
-    }
-
-    public function create()
-    {
-        dd('1');
-    }
-
-    public function store()
-    {
-        dd('1');
+        return Product::all();
     }
 
     public function show($id)
     {
-        dd($id);
+        return Product::findOrFail($id);
     }
 
-    public function edit($id)
+    public function update(Request $request, $id)
     {
-        dd($id);
+        $product = Product::findOrFail($id);
+        $product->update($request->all());
+
+        return $product;
     }
 
-    public function update($id)
+    public function store(Request $request)
     {
-        dd($id);
+        $product = Product::create($request->all());
+        return $product;
     }
 
     public function destroy($id)
     {
-        dd($id);
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return '';
     }
 }
