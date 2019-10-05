@@ -14,8 +14,8 @@ class CreateOfferProductTable extends Migration
     public function up()
     {
         Schema::create('offer_product', function (Blueprint $table) {
-            $table->bigIncrements('offer_id')->unsigned();
-            $table->string('product_id')->unsigned();
+            $table->BigInteger('offer_id')->unsigned();
+            $table->BigInteger('product_id')->unsigned();
             $table->integer('count');
             $table->timestamps();
             $table->primary(['offer_id', 'product_id']);
