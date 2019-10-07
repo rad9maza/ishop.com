@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,5 +22,5 @@ Route::post('/products', 'ProductContoller@store'); //создание
 Route::put('/products/{id}', 'ProductContoller@update'); //обновить
 Route::delete('/products/{id}', 'ProductContoller@destroy'); //удалить
 
-Route::get('/categories', 'CategiryController@index'); //список
-Route::get('/categories/{id}', 'CategiryController@show'); //один
+Route::get('/categories', 'CategoryContoller@index'); //список
+Route::get('/categories/{id}', 'CategoryContoller@show'); //один
