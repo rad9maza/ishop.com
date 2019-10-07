@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class ProductsTableSeeder extends Seeder
 {
@@ -11,13 +12,14 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker::create();
         for ($i = 1; $i <= 5; $i++) {
             for ($j = 1; $j <= 5; $j++) {
                 DB::table('products')->insert([
-                    'name' => Str::random(10),
-                    'description' => Str::random(10),
+                    'name' => $faker->colorName,
+                    'description' => $faker->realText($maxNbChars = 25, $indexSize = 2),
                     'category_id' => $i,
-                    'image' => Str::random(10),
+                    'image' => $faker->imageUrl($width = 640, $height = 480),
                     'price' => rand(),
                 ]);
             }

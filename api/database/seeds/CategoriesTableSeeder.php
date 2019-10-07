@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -11,10 +12,11 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker::create();
         for ($i = 1; $i <= 5; $i++) {
             DB::table('categories')->insert([
-                'name' => Str::random(10),
-                'description' => Str::random(10),
+                'name' => $faker->name,
+                'description' => $faker->realText($maxNbChars = 15, $indexSize = 2),
             ]);
         }
     }
