@@ -36,6 +36,5 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return '';
-    }
+        return response('',204);}
 }
