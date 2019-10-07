@@ -13,11 +13,13 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
+        $categories = [];
         for ($i = 1; $i <= 5; $i++) {
-            DB::table('categories')->insert([
+            array_push($categories, [
                 'name' => $faker->name,
                 'description' => $faker->realText($maxNbChars = 15, $indexSize = 2),
             ]);
         }
+        DB::table('categories')->insert($categories);
     }
 }
