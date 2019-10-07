@@ -165,7 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        YbrNX\MariaDB\MariaDBServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
