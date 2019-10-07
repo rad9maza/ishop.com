@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->string('image');
             $table->double('price');
-//            $table->json('attrs');
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
