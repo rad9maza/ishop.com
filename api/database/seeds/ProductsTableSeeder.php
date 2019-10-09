@@ -15,7 +15,6 @@ class ProductsTableSeeder extends Seeder
     {
         $faker = Faker::create();
         $categories = Category::all()->pluck('id');
-        echo $categories;
         $products = [];
         foreach ($categories as $category) {
             for ($j = 1; $j <= 5; $j++) {

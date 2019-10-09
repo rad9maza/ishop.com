@@ -15,9 +15,9 @@ class CategoriesTableSeeder extends Seeder
         $faker = Faker::create();
         $categories = [];
         for ($i = 1; $i <= 5; $i++) {
-            array_push($categories, [
-                'name' => $faker->name,
-                'description' => $faker->realText($maxNbChars = 15, $indexSize = 2),
+            $categories[] = ([
+                "name" => $faker->name,
+                "description" => $faker->realText($maxNbChars = 15, $indexSize = 2)
             ]);
         }
         DB::table('categories')->insert($categories);
