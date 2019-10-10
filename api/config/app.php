@@ -166,7 +166,8 @@ return [
          * Package Service Providers...
          */
         YbrNX\MariaDB\MariaDBServiceProvider::class,
-        
+        Barryvdh\Cors\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
