@@ -1,43 +1,41 @@
-import React from "react";
-
-const prefix = 'storedProducts';
+const prefix = "storedProducts";
 
 function getStorage() {
-    return (JSON.parse(localStorage.getItem(prefix) || "[]"));
+  return JSON.parse(localStorage.getItem(prefix) || "[]");
 }
 
 function setStorage(data) {
-    localStorage.setItem(prefix, JSON.stringify(data));
+  localStorage.setItem(prefix, JSON.stringify(data));
 }
 
 export function addProductToCart(key) {
-    const data = getStorage();
-    if (!data.find(o => o.id === key)) data.push({id: key, count: 1});
-    setStorage(data);
+  const data = getStorage();
+  if (!data.find(o => o.id === key)) data.push({ id: key, count: 1 });
+  setStorage(data);
 }
 
 export function deleteProductFromCart(key) {
-    const data = getStorage();
-    setStorage(data.filter((item) => item.id !== key));
+  const data = getStorage();
+  setStorage(data.filter(item => item.id !== key));
 }
 
 export function updateProductCountInCart(key, count) {
-    const data = getStorage();
-    const index = data.findIndex(obj => obj.id === key);
-    data[index].count = count;
-    setStorage(data);
+  const data = getStorage();
+  const index = data.findIndex(obj => obj.id === key);
+  data[index].count = count;
+  setStorage(data);
 }
 
 export function getAllProductIdsInCart() {
-    const data = getStorage();
-    const exportData = [];
-    for (let item of data) {
-        exportData.push({id: item.id});
-    }
-    return exportData;
+  const data = getStorage();
+  const exportData = [];
+  for (let item of data) {
+    exportData.push({ id: item.id });
+  }
+  return exportData;
 }
 
 export function getCountProductsInCart() {
-    const data = getStorage();
-    return data.length;
+  const data = getStorage();
+  return data.length;
 }

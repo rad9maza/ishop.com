@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 const AxiosService = axios.create({
-    baseURL: 'http://ishop.com/',
-    responseType: 'json',
+  baseURL: "http://ishop.com/",
+  responseType: "json"
 });
 
-export default AxiosService
+export default AxiosService;
