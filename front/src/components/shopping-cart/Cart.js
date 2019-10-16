@@ -5,9 +5,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Delete from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 import AxiosService from "../../utils/axiosService";
-import {getProductCountInCart, updateProductCountInCart} from "../../utils/shopingCartService";
+import {
+  deleteProductFromCart,
+  getProductCountInCart,
+  updateProductCountInCart
+} from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -64,7 +70,7 @@ export default function Cart() {
     <React.Fragment>
       <main>
         {data.map(card => (
-          <Card className={classes.card}>
+          <Card className={classes.card} key={card.id}>
             <CardMedia
               className={classes.cover}
               image={card.image}
@@ -79,19 +85,34 @@ export default function Cart() {
                   Price: {card.price}
                 </Typography>
               </CardContent>
-              <TextField
-                id="standard-number"
-                label="Count of products"
-                value={getProductCountInCart(card.id)}
-                onChange={handleChange(card.id)}
-                type="number"
-                inputProps={{ min: "1", max: "10", step: "1" }}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                margin="normal"
-              />
+              <div>
+                <TextField
+                  id="standard-number"
+                  label="Count of products"
+                  value={getProductCountInCart(card.id)}
+                  onChange={handleChange(card.id)}
+                  type="number"
+                  inputProps={{ min: "1", max: "10", step: "1" }}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  margin="normal"
+                />
+                <IconButton
+                  aria-label="delete"
+                  style={{
+                    fontSize: 30,
+                    verticalAlign: "bottom"
+                  }}
+                  onClick={() => {
+                    deleteProductFromCart(card.id);
+                    setValue(!value);
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </div>
             </div>
             <div className={classes.details}>
               <CardContent className={classes.content}>
