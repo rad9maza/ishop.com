@@ -12,7 +12,8 @@ import AxiosService from "../../utils/axiosService";
 import {
   deleteProductFromCart,
   getProductCountInCart,
-  updateProductCountInCart
+  updateProductCountInCart,
+  getAllProductIdsInCart
 } from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
@@ -53,7 +54,10 @@ export default function Cart() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data } = await AxiosService.get(`/products/`);
+      const allProductIdsInCart = getAllProductIdsInCart();
+      const { data } = await AxiosService.get(`/products/`, {
+        params: { ids: [allProductIdsInCart] }
+      });
       setData(data);
     }
 
@@ -64,6 +68,12 @@ export default function Cart() {
     updateProductCountInCart(id, event.target.value);
     setValue(!value);
   };
+
+  const handleDelete = id => event => {
+    deleteProductFromCart(id);
+    setData(data.filter(item => item.id !== id));
+  };
+
   const classes = useStyles();
 
   return (
@@ -105,10 +115,7 @@ export default function Cart() {
                     fontSize: 30,
                     verticalAlign: "bottom"
                   }}
-                  onClick={() => {
-                    deleteProductFromCart(card.id);
-                    setValue(!value);
-                  }}
+                  onClick={handleDelete(card.id)}
                 >
                   <Delete />
                 </IconButton>

@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('ids')) {
+            $ids = json_decode($request->ids[0], true);
+            return Product::findMany($ids);
+        }
         return Product::all();
     }
 
@@ -36,5 +40,6 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return response('',204);}
+        return response('', 204);
+    }
 }

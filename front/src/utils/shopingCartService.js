@@ -37,7 +37,7 @@ export function getAllProductIdsInCart() {
   const data = getStorage();
   const exportData = [];
   for (let item of data) {
-    exportData.push({ id: item.id });
+    exportData.push(item.id);
   }
   return exportData;
 }
