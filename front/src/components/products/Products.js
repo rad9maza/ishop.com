@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 
 import AxiosService from "../../utils/axiosService";
-import { addProductToCart } from "../../utils/ShopingCartService";
+import { addProductToCart } from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
   icon: {

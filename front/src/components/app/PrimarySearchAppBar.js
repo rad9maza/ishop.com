@@ -15,7 +15,7 @@ import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 
-import { getCountProductsInCart } from "../../utils/ShopingCartService";
+import { getCountProductsInCart } from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
   grow: {

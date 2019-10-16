@@ -17,7 +17,7 @@ import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import Grid from "@material-ui/core/Grid";
 
 import AxiosService from "../../utils/axiosService";
-import {addProductToCart} from "../../utils/ShopingCartService";
+import {addProductToCart} from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
   card: {},

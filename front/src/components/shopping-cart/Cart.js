@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
 import AxiosService from "../../utils/axiosService";
-import {getProductCountInCart, updateProductCountInCart} from "../../utils/ShopingCartService";
+import {getProductCountInCart, updateProductCountInCart} from "../../utils/shopingCartService";
 
 const useStyles = makeStyles(theme => ({
   card: {
