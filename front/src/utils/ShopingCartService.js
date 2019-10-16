@@ -26,6 +26,15 @@ export function updateProductCountInCart(key, count) {
   setStorage(data);
 }
 
+export function getProductCountInCart(key) {
+  const data = getStorage();
+  const index = data.findIndex(obj => obj.id === key);
+  console.log(index);
+  console.log(data[index]);
+  if (index === -1) return 0;
+  return data[index].count;
+}
+
 export function getAllProductIdsInCart() {
   const data = getStorage();
   const exportData = [];
