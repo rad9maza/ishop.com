@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,6 +14,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
+
+import { getCountProductsInCart } from "../../utils/ShopingCartService";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -81,6 +83,11 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [countProducts, setCountProducts] = useState(getCountProductsInCart());
+
+  useEffect(() => {
+    setCountProducts(getCountProductsInCart());
+  }, []);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -129,14 +136,22 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 3 new mails" color="inherit">
-          <Badge badgeContent={3} color="secondary">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
-        <p>Shoping cart</p>
-      </MenuItem>
+      <Link
+        to="/shoppingCart"
+        style={{ textDecoration: "none", color: "black" }}
+      >
+        <MenuItem>
+          <IconButton
+            aria-label={"show " + { countProducts } + " new mails"}
+            color="inherit"
+          >
+            <Badge badgeContent={countProducts} color="secondary">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
+          <p>Shoping cart</p>
+        </MenuItem>
+      </Link>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -183,11 +198,19 @@ export default function PrimarySearchAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 3 new mails" color="inherit">
-              <Badge badgeContent={3} color="secondary">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
+            <Link
+              to="/shoppingCart"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <IconButton
+                aria-label={"show " + { countProducts } + " new mails"}
+                color="inherit"
+              >
+                <Badge badgeContent={countProducts} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
+            </Link>
             <IconButton
               edge="end"
               aria-label="account of current user"

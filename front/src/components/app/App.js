@@ -15,9 +15,10 @@ export default function App() {
       <CssBaseline />
       <PrimarySearchAppBar />
       <Switch>
-        <Route exact path="/" component={Cart} />
+        <Route exact path="/" component={Products} />
         <Route exact path="/products/:id" component={Product} />
         <Route exact path="/products" component={Products} />
+        <Route exact path="/shoppingCart" component={Cart} />
       </Switch>
       <Footer />
     </div>
