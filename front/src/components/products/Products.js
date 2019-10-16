@@ -11,6 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 
 import AxiosService from "../../utils/axiosService";
+import { addProductToCart } from "../../utils/ShopingCartService";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -88,6 +89,9 @@ export default function Products() {
                       className={classes.menuButton}
                       color="inherit"
                       aria-label="open drawer"
+                      onClick={() => {
+                        addProductToCart(card.id);
+                      }}
                     >
                       <AddShoppingCart />
                     </IconButton>

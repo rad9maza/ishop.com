@@ -83,6 +83,7 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  //TODO: changing badge content
   const [countProducts, setCountProducts] = useState(getCountProductsInCart());
 
   useEffect(() => {

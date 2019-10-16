@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Card from "@material-ui/core/Card";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,14 +10,14 @@ import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
+import {red} from "@material-ui/core/colors";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import Grid from "@material-ui/core/Grid";
 
 import AxiosService from "../../utils/axiosService";
-import { addProductToCart } from "../../utils/ShopingCartService";
+import {addProductToCart} from "../../utils/ShopingCartService";
 
 const useStyles = makeStyles(theme => ({
   card: {},
