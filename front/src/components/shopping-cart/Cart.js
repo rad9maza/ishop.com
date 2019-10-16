@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
 import AxiosService from "../../utils/axiosService";
+import {getProductCountInCart, updateProductCountInCart} from "../../utils/ShopingCartService";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -53,8 +54,8 @@ export default function Cart() {
     fetchData();
   }, []);
 
-  const handleChange = name => event => {
-    localStorage.setItem(name, event.target.value);
+  const handleChange = id => event => {
+    updateProductCountInCart(id, event.target.value);
     setValue(!value);
   };
   const classes = useStyles();
@@ -81,7 +82,7 @@ export default function Cart() {
               <TextField
                 id="standard-number"
                 label="Count of products"
-                value={localStorage.getItem(card.id)}
+                value={getProductCountInCart(card.id)}
                 onChange={handleChange(card.id)}
                 type="number"
                 inputProps={{ min: "1", max: "10", step: "1" }}
