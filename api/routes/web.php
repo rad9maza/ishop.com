@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,10 +16,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', 'ProductContoller@index');
-Route::get('/products/create', 'ProductContoller@create');
-Route::post('/products', 'ProductContoller@store');
-Route::get('/products/{id}', 'ProductContoller@show');
-Route::get('/products/{id}/edit', 'ProductContoller@edit');
-Route::put('/products/{id}', 'ProductContoller@update');
-Route::delete('/products/{id}', 'ProductContoller@destroy');
+Route::get('/products', 'ProductController@index'); //список
+Route::get('/products/{id}', 'ProductController@show'); //один
+Route::post('/products', 'ProductController@store'); //создание
+Route::put('/products/{id}', 'ProductController@update'); //обновить
+Route::delete('/products/{id}', 'ProductController@destroy'); //удалить
+
+Route::get('/categories', 'CategoryController@index'); //список
+Route::get('/categories/{id}', 'CategoryController@show'); //один

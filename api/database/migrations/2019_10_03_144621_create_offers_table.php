@@ -15,10 +15,9 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('user_id')->unsigned();
+            $table->BigInteger('user_id')->unsigned();
             $table->boolean('payments');
             $table->timestamps();
-            $table->primary('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

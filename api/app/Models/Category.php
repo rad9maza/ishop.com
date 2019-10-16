@@ -12,25 +12,4 @@ class Category extends Model
     {
         return $this->hasMany('App\Models\Product');
     }
-
-    public static function add($fields)
-    {
-        $category = new static;
-        $category->fill($fields);
-        $category->save();
-
-        return $category;
-    }
-
-    public function edit($fields)
-    {
-        $this->fill($fields);
-        $this->save();
-    }
-
-    public function delete()
-    {
-        //todo deletion products. check db
-        $this->delete();
-    }
 }
