@@ -31,6 +31,6 @@ class CreateOfferProductTable extends Migration
      */
     public function down()
     {
-        Schema::drop('offer_product');
+        Schema::dropIfExists('offer_product');
     }
 }

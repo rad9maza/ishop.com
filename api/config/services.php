@@ -29,5 +29,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'google' => [
+        'client_id' => '725406028195-5tmg5iqf81sqidk2q1s5ji9654rdm7ef.apps.googleusercontent.com',
+        'client_secret' => 'ywJkYQ2a1hMnpUW31VfbzZYF',
+        'redirect' => 'http://ishop.com/socialite/google/callback', // Ссылка на перенаправление при удачной авторизации (3)
+    ],
 ];

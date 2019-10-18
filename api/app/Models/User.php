@@ -2,37 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
-    protected $fillable = ['name', 'surname', 'email', 'address'];
+    protected $fillable = ['name', 'email', 'password', 'provider', 'provider_id' ];
 
     public function offers()
     {
         return $this->hasMany('App\Models\Offer');
-    }
-
-    public static function add($fields)
-    {
-        $user = new static;
-        $user->fill($fields);
-        $user->password = bcrypt($fields['password']);
-        $user->save();
-
-        return $user;
-    }
-
-    public function edit($fields)
-    {
-        $this->fill($fields);
-        $this->password = bcrypt($fields['password']);
-        $this->save();
-    }
-
-    public function delete()
-    {
-        //todo deletion products. check db
-        $this->delete();
     }
 }
