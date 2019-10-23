@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +15,7 @@ class ProductController extends Controller
             $ids = json_decode($request->ids[0], true);
             return Product::findMany($ids);
         }
-        return Product::all();
+        return ProductService::getPaginatedAndFilteredProducts($request);
     }
 
     public function show($id)
