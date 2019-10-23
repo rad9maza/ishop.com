@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import PrimarySearchAppBar from "./PrimarySearchAppBar";
 import Cart from "../shopping-cart/Cart";
 import "./App.css";
+import SignIn from "../sign-in/SignIn";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route exact path="/products/:id" component={Product} />
         <Route exact path="/products" component={Products} />
         <Route exact path="/shoppingCart" component={Cart} />
+        <Route exact path="/profile" component={SignIn} />
       </Switch>
       <Footer />
     </div>

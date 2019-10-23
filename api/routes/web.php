@@ -15,7 +15,7 @@ Route::post('/products', 'ProductController@store'); //создание
 Route::put('/products/{id}', 'ProductController@update'); //обновить
 Route::delete('/products/{id}', 'ProductController@destroy'); //удалить
 
-Route::get('/categories', 'CategoryController@index')->middleware('auth'); //список
+Route::get('/categories', 'CategoryController@index'); //список
 Route::get('/categories/{id}', 'CategoryController@show')->middleware('auth'); //один
 
 Auth::routes();
