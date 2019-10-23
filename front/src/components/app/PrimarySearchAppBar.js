@@ -4,12 +4,10 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import HomeIcon from "@material-ui/icons/Home";
-import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -81,7 +79,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   //TODO: changing badge content
   const [countProducts, setCountProducts] = useState(getCountProductsInCart());
@@ -90,20 +87,10 @@ export default function PrimarySearchAppBar() {
     setCountProducts(getCountProductsInCart());
   }, []);
 
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = event => {
@@ -111,20 +98,6 @@ export default function PrimarySearchAppBar() {
   };
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -153,17 +126,19 @@ export default function PrimarySearchAppBar() {
           <p>Shoping cart</p>
         </MenuItem>
       </Link>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <Link to="/profile" style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>{" "}
+      </Link>
     </Menu>
   );
 
@@ -184,19 +159,7 @@ export default function PrimarySearchAppBar() {
           <Typography className={classes.title} variant="h6" noWrap>
             ISHOP
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Link
@@ -212,16 +175,20 @@ export default function PrimarySearchAppBar() {
                 </Badge>
               </IconButton>
             </Link>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
+            <Link
+              to="/profile"
+              style={{ textDecoration: "none", color: "white" }}
             >
-              <AccountCircle />
-            </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Link>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -237,7 +204,6 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }
