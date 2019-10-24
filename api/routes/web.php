@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -16,7 +14,7 @@ Route::put('/products/{id}', 'ProductController@update'); //обновить
 Route::delete('/products/{id}', 'ProductController@destroy'); //удалить
 
 Route::get('/categories', 'CategoryController@index'); //список
-Route::get('/categories/{id}', 'CategoryController@show')->middleware('auth'); //один
+Route::get('/categories/{id}', 'CategoryController@show')->middleware('auth:api'); //один
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
