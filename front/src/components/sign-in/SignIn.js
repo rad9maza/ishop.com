@@ -1,65 +1,77 @@
-import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 
-const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-    textAlign: "center"
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
+import AxiosService from "../../utils/axiosService";
+
+export default class SignIn extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: JSON.parse(localStorage.getItem("profileObj")),
+      token: localStorage.getItem("token"),
+      isAuthenticated: JSON.parse(localStorage.getItem("isAuthenticated"))
+    };
+    this.googleResponse = this.googleResponse.bind(this);
   }
-}));
 
-export default function SignIn() {
-  const classes = useStyles();
-
-  const responseGoogle = response => {
-    console.log(response);
+  logout = () => {
+    this.setState({ isAuthenticated: false, token: "", user: null });
+    localStorage.removeItem("profileObj");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isAuthenticated");
+  };
+  onFailure = error => {
+    alert(error);
   };
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
-        </form>
+  async googleResponse(response) {
+    const params = {
+      grant_type: "social",
+      client_id: 1,
+      client_secret: "IZvNu58EPugyPgiWVO5OyiX0VyxRhfSGSDAKPTBE",
+      provider: "google",
+      access_token: response.accessToken
+    };
+    await AxiosService.post("/oauth/token", params, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
+      localStorage.setItem("isAuthenticated", true);
+      this.setState({
+        isAuthenticated: true,
+        user: response.profileObj,
+        token: res.data.access_token
+      });
+    });
+  }
+
+  render() {
+    let content = !!this.state.isAuthenticated ? (
+      <div>
+        <p>Authenticated</p>
+        <div>Hello {this.state.user.name}</div>
+        <div>Your email is {this.state.user.email}</div>
+        <div>{this.state.user.imageUrl}</div>
+
+        <div>
+          <button onClick={this.logout} className="button">
+            Log out
+          </button>
+        </div>
       </div>
-    </Container>
-  );
+    ) : (
+      <div>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          buttonText="Login"
+          onSuccess={this.googleResponse}
+          onFailure={this.onFailure}
+        />
+      </div>
+    );
+    return <div className="App">{content}</div>;
+  }
 }
