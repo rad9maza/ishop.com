@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
+import Typography from "@material-ui/core/Typography";
 
 import AxiosService from "../../utils/axiosService";
 
@@ -32,30 +33,34 @@ export default class SignIn extends Component {
       provider: "google",
       access_token: response.accessToken
     };
-    await AxiosService.post("/oauth/token", params, {
+    const { data } = await AxiosService.post("/oauth/token", params, {
       headers: {
         "Content-Type": "application/json"
       }
-    }).then(res => {
-      localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
-      localStorage.setItem("isAuthenticated", true);
-      this.setState({
-        isAuthenticated: true,
-        user: response.profileObj,
-        token: res.data.access_token
-      });
+    });
+    localStorage.setItem("token", data.data.access_token);
+    localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
+    localStorage.setItem("isAuthenticated", true);
+    this.setState({
+      isAuthenticated: true,
+      user: response.profileObj,
+      token: data.data.access_token
     });
   }
 
   render() {
     let content = !!this.state.isAuthenticated ? (
       <div>
-        <p>Authenticated</p>
-        <div>Hello {this.state.user.name}</div>
-        <div>Your email is {this.state.user.email}</div>
-        <div>{this.state.user.imageUrl}</div>
-
+        <Typography variant="h3" gutterBottom>
+          Authenticated
+        </Typography>
+        <Typography variant="h6" gutterBottom>
+          Hello {this.state.user.name}
+        </Typography>
+        <Typography variant="h6" gutterBottom>
+          Your email is {this.state.user.email}
+        </Typography>
+        <img src={this.state.user.imageUrl} alt="Avatar" />
         <div>
           <button onClick={this.logout} className="button">
             Log out
@@ -72,6 +77,6 @@ export default class SignIn extends Component {
         />
       </div>
     );
-    return <div className="App">{content}</div>;
+    return <div align="center">{content}</div>;
   }
 }

@@ -11,10 +11,11 @@ use Socialite;
 
 class SocialController extends Controller
 {
-    public function social(Request $request) {
+    public function social(Request $request)
+    {
 
         $provider = $request->input('provider');
-        switch($provider){
+        switch ($provider) {
             case SocialAccount::SERVICE_FACEBOOK:
                 $social_user = Socialite::driver(SocialAccount::SERVICE_FACEBOOK)->fields([
                     'name',
@@ -25,32 +26,31 @@ class SocialController extends Controller
                 break;
             case SocialAccount::SERVICE_GOOGLE:
                 $social_user = Socialite::driver(SocialAccount::SERVICE_GOOGLE)
-                    ->scopes(['profile','email']);
+                    ->scopes(['profile', 'email']);
                 break;
             default :
                 $social_user = null;
         }
 
-        abort_if($social_user == null , 422,'Provider missing');
+        abort_if($social_user == null, 422, 'Provider missing');
 
         $social_user_details = $social_user->userFromToken($request->input('access_token'));
 
-        abort_if($social_user_details == null , 400,'Invalid credentials'); //|| $fb_user->id != $request->input('userID')
+        abort_if($social_user_details == null, 400, 'Invalid credentials'); //|| $fb_user->id != $request->input('userID')
 
-        $account = SocialAccount::where("provider_user_id",$social_user_details->id)
-            ->where("provider",$provider)
+        $account = SocialAccount::where('provider_user_id', $social_user_details->id)
+            ->where('provider', $provider)
             ->with('user')->first();
 
-        if($account){
+        if ($account) {
             return $this->issueToken($account->user);
-        }
-        else {
+        } else {
 // create new user and social login if user with social id not found.
-            $user = User::where("email",$social_user_details->getEmail())->first();
-            if(!$user){
+            $user = User::where('email', $social_user_details->getEmail())->first();
+            if (!$user) {
 // create new social login if user already exist.
                 $user = new User;
-                switch($provider){
+                switch ($provider) {
                     case SocialAccount::SERVICE_FACEBOOK:
                         $user->first_name = $social_user_details->user['first_name'];
                         $user->last_name = $social_user_details->user['last_name'];
@@ -74,13 +74,14 @@ class SocialController extends Controller
         }
     }
 
-    private function issueToken(User $user) {
+    private function issueToken(User $user)
+    {
 
         $userToken = $user->token() ?? $user->createToken('socialLogin');
 
         return [
-            "token_type" => "Bearer",
-            "access_token" => $userToken->accessToken
+            'token_type' => 'Bearer',
+            'access_token' => $userToken->accessToken
         ];
     }
 }

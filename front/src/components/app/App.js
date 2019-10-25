@@ -19,7 +19,7 @@ export default function App() {
         <Route exact path="/" component={Products} />
         <Route exact path="/products/:id" component={Product} />
         <Route exact path="/products" component={Products} />
-        <Route exact path="/shoppingCart" component={Cart} />
+        <Route exact path="/cart" component={Cart} />
         <Route exact path="/profile" component={SignIn} />
       </Switch>
       <Footer />

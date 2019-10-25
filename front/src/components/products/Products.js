@@ -4,7 +4,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,56 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import AxiosService from "../../utils/axiosService";
 import { addProductToCart } from "../../utils/shopingCartService";
-
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2)
-  },
-  icon: {
-    marginRight: theme.spacing(2)
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4)
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8)
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  },
-  cardMedia: {
-    paddingTop: "56.25%" // 16:9
-  },
-  cardContent: {
-    flexGrow: 1
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6)
-  },
-  menu: {
-    width: 200
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200
-  }
-}));
+import { useStyles } from "./ProductsStyles";
 
 export default function Products() {
   const classes = useStyles();
@@ -82,14 +32,14 @@ export default function Products() {
   useEffect(() => {
     async function fetchData() {
       const { page, pageLength } = state;
-      const { data } = await AxiosService.get("/products/", {
+      const { data } = await AxiosService.get("/products", {
         params: { page, pageLength }
       });
-      setData(data[0]);
-      setState({ ...state, totalRecords: data[1] });
-      await AxiosService.get("/categories/").then(response => {
-        setCategories(response.data);
-      });
+      const [products, total] = data;
+      setData(products);
+      setState({ ...state, totalRecords: total });
+      const cat = await AxiosService.get("/categories");
+      setCategories(cat.data);
     }
     fetchData();
   }, []);
@@ -100,8 +50,9 @@ export default function Products() {
       const { data } = await AxiosService.get("/products/", {
         params: { page, pageLength, category, search }
       });
-      setData(data[0]);
-      await setState({ ...state, totalRecords: data[1] });
+      const [products, total] = data;
+      setData(products);
+      setState({ ...state, totalRecords: total });
     }
     getFilteredData();
   }, [state.category, state.page, state.pageLength, state.search]);
@@ -115,13 +66,11 @@ export default function Products() {
   };
 
   const searchHandler = event => {
-    // if (event.key === "Enter") {
-      setState({
-        ...state,
-        search: event.target.value,
-        page: 1
-      });
-    // }
+    setState({
+      ...state,
+      search: event.target.value,
+      page: 1
+    });
   };
 
   return (
@@ -186,31 +135,31 @@ export default function Products() {
                 ))}
               </TextField>
             </Grid>
-            {data.map(card => (
-              <Grid item key={card.id} xs={12} sm={6} md={4}>
+            {data.map(({ name, description, image, id }) => (
+              <Grid item key={id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={card.image}
-                    title={card.id}
+                    image={image}
+                    title={id}
                   />
                   <CardContent className={classes.cardContent}>
                     <Link
-                      to={`/products/${card.id}`}
+                      to={`/products/${id}`}
                       style={{ textDecoration: "none" }}
                     >
                       <Typography gutterBottom variant="h5" component="h2">
-                        {card.name}
+                        {name}
                       </Typography>
                     </Link>
-                    <Typography>{card.description}</Typography>
+                    <Typography>{description}</Typography>
                     <IconButton
                       edge="start"
                       className={classes.menuButton}
                       color="inherit"
                       aria-label="open drawer"
                       onClick={() => {
-                        addProductToCart(card.id);
+                        addProductToCart(id);
                       }}
                     >
                       <AddShoppingCart />
