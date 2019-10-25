@@ -1,9 +1,8 @@
 <?php
 namespace App\Models;
-use App\Models\LinkedSocialAccount;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use Laravel\Passport\HasApiTokens;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -16,6 +15,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    public function offers()
+    {
+        return $this->hasMany('App\Models\Offer');
+    }
+
     public function linkedSocialAccounts()
     {
         return $this->hasMany(LinkedSocialAccount::class);

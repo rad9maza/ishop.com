@@ -14,6 +14,10 @@ export function addProductToCart(key) {
   setStorage(data);
 }
 
+export function cleanCart() {
+  localStorage.removeItem(prefix);
+}
+
 export function deleteProductFromCart(key) {
   const data = getStorage();
   setStorage(data.filter(item => item.id !== key));
@@ -40,6 +44,10 @@ export function getAllProductIdsInCart() {
     exportData.push(item.id);
   }
   return exportData;
+}
+
+export function getAllProductFromCart() {
+  return getStorage();
 }
 
 export function getCountProductsInCart() {

@@ -13,8 +13,10 @@ Route::post('/products', 'ProductController@store'); //создание
 Route::put('/products/{id}', 'ProductController@update'); //обновить
 Route::delete('/products/{id}', 'ProductController@destroy'); //удалить
 
+Route::post('/offers', 'OfferController@store')->middleware('auth:api'); //создание
+
 Route::get('/categories', 'CategoryController@index'); //список
-Route::get('/categories/{id}', 'CategoryController@show')->middleware('auth:api'); //один
+Route::get('/categories/{id}', 'CategoryController@show'); //один
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

@@ -9,7 +9,7 @@ export default class SignIn extends Component {
     this.state = {
       user: JSON.parse(localStorage.getItem("profileObj")),
       token: localStorage.getItem("token"),
-      isAuthenticated: JSON.parse(localStorage.getItem("isAuthenticated"))
+      isAuthenticated: localStorage.getItem("isAuthenticated")
     };
     this.googleResponse = this.googleResponse.bind(this);
   }
