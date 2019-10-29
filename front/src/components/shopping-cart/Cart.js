@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -18,7 +18,7 @@ import {
   updateProductCountInCart
 } from "../../utils/shopingCartService";
 import GoogleLogin from "react-google-login";
-import { useStyles } from "./CartStyles";
+import {useStyles} from "./CartStyles";
 
 export default function Cart() {
   const classes = useStyles();
@@ -26,7 +26,7 @@ export default function Cart() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState(false);
   const [state, setState] = useState({
-    user: JSON.parse(localStorage.getItem("profileObj")),
+    user: JSON.parse(localStorage.getItem("user")),
     token: localStorage.getItem("token")
   });
 
@@ -43,8 +43,8 @@ export default function Cart() {
   }, []);
 
   const handleChange = id => event => {
-      updateProductCountInCart(id, event.target.value);
-      setValue(!value);
+    updateProductCountInCart(id, event.target.value);
+    setValue(!value);
   };
 
   const handleDelete = id => event => {
@@ -65,11 +65,11 @@ export default function Cart() {
         "Content-Type": "application/json"
       }
     });
-    localStorage.setItem("token", data.data.access_token);
-    localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
+    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("user", JSON.stringify(response.profileObj));
     setState({
       user: response.profileObj,
-      token: data.data.access_token
+      token: data.access_token
     });
   }
 
@@ -84,27 +84,30 @@ export default function Cart() {
       setData([]);
     }
   }
-  let buy =
-    data.length === 0 ? (
-      <Typography variant="h3" gutterBottom>
-        Cart is empty
-      </Typography>
-    ) : !!state.user ? (
-      <Button
-        onClick={byeNow}
-        variant="contained"
-        color="primary"
-        className={classes.button}
-      >
-        Buy now
-      </Button>
-    ) : (
-      <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Login"
-        onSuccess={googleResponse}
-      />
-    );
+  let buy = useMemo(
+    () =>
+      data.length === 0 ? (
+        <Typography variant="h3" gutterBottom>
+          Cart is empty
+        </Typography>
+      ) : !!state.user ? (
+        <Button
+          onClick={byeNow}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Buy now
+        </Button>
+      ) : (
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          buttonText="Login"
+          onSuccess={googleResponse}
+        />
+      ),
+    [data.length, state.user]
+  );
   return (
     <React.Fragment>
       <main>

@@ -36,7 +36,7 @@ export default function Product(props) {
   const fetchData = useCallback(async () => {
     const { data } = await AxiosService.get(`/products/${parseInt(id, 10)}`);
     setData(data);
-  }, [data]);
+  }, [id]);
 
   useEffect(() => {
     fetchData();

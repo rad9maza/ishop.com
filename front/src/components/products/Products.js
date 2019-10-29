@@ -1,33 +1,45 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useReducer, useState} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
-import { TablePagination } from "@trendmicro/react-paginations";
+import {TablePagination} from "@trendmicro/react-paginations";
 import "@trendmicro/react-paginations/dist/react-paginations.css";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import AxiosService from "../../utils/axiosService";
-import { addProductToCart } from "../../utils/shopingCartService";
-import { useStyles } from "./ProductsStyles";
+import {addProductToCart} from "../../utils/shopingCartService";
+import {useStyles} from "./ProductsStyles";
 
 export default function Products() {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [state, setState] = useState({
+  const stateReducer = (state, action) => {
+    // switch (action.type) {
+      // case "test_update":
+        return {
+          ...state,
+          ...action
+        };
+      // default:
+      //   return state;
+    // }
+  };
+  const [state, setState] = useReducer(stateReducer, {
     category: "",
     search: "",
     page: 1,
     pageLength: 4,
     totalRecords: 1
   });
+
   useEffect(() => {
     async function fetchData() {
       const { page, pageLength } = state;
@@ -36,7 +48,7 @@ export default function Products() {
       });
       const [products, total] = data;
       setData(products);
-      setState({ ...state, totalRecords: total });
+      setState({ totalRecords: total });
     }
     fetchData();
   }, []);
@@ -56,7 +68,7 @@ export default function Products() {
     });
     const [products, total] = data;
     setData(products);
-    setState({ ...state, totalRecords: total });
+    setState({ totalRecords: total });
   }, [state.category, state.page, state.pageLength, state.search]);
 
   useEffect(() => {
@@ -65,7 +77,6 @@ export default function Products() {
 
   const handleChange = name => event => {
     setState({
-      ...state,
       [name]: event.target.value,
       page: 1
     });
@@ -73,7 +84,6 @@ export default function Products() {
 
   const searchHandler = event => {
     setState({
-      ...state,
       search: event.target.value,
       page: 1
     });
@@ -98,7 +108,7 @@ export default function Products() {
                 pageLengthMenu={[4, 10, 15]}
                 totalRecords={state.totalRecords}
                 onPageChange={({ page, pageLength }) => {
-                  setState({ ...state, page, pageLength });
+                  setState({ page, pageLength });
                 }}
                 prevPageRenderer={() => <i className="fa fa-angle-left" />}
                 nextPageRenderer={() => <i className="fa fa-angle-right" />}

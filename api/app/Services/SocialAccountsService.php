@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Services;
+
 use App\Models\User;
 use App\Models\LinkedSocialAccount;
 use Laravel\Socialite\Two\User as ProviderUser;
+
 class SocialAccountsService
 {
     /**
@@ -20,24 +23,23 @@ class SocialAccountsService
             ->first();
         if ($linkedSocialAccount) {
             return $linkedSocialAccount->user;
-        } else {
-            $user = null;
-            if ($email = $providerUser->getEmail()) {
-                $user = User::where('email', $email)->first();
-            }
-            if (! $user) {
-                $user = User::create([
-                    'name' => $providerUser->getName(),
-                    'provider' => 'google',
-                    'email' => $providerUser->getEmail(),
-                    'provider_id' => $providerUser->getId(),
-                ]);
-            }
-            $user->linkedSocialAccounts()->create([
-                'provider_id' => $providerUser->getId(),
-                'provider_name' => $provider,
-            ]);
-            return $user;
         }
+        $user = null;
+        if ($email = $providerUser->getEmail()) {
+            $user = User::where('email', $email)->first();
+        }
+        if (!$user) {
+            $user = User::create([
+                'name' => $providerUser->getName(),
+                'provider' => 'google',
+                'email' => $providerUser->getEmail(),
+                'provider_id' => $providerUser->getId(),
+            ]);
+        }
+        $user->linkedSocialAccounts()->create([
+            'provider_id' => $providerUser->getId(),
+            'provider_name' => $provider,
+        ]);
+        return $user;
     }
 }
