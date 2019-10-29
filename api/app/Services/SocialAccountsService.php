@@ -27,9 +27,10 @@ class SocialAccountsService
             }
             if (! $user) {
                 $user = User::create([
-                    'first_name' => $providerUser->getName(),
-                    'last_name' => $providerUser->getName(),
+                    'name' => $providerUser->getName(),
+                    'provider' => 'google',
                     'email' => $providerUser->getEmail(),
+                    'provider_id' => $providerUser->getId(),
                 ]);
             }
             $user->linkedSocialAccounts()->create([

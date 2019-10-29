@@ -17,7 +17,7 @@ import { useStyles } from "./PrimarySearchAppBarStyles";
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   //TODO: changing badge content
   const [countProducts, setCountProducts] = useState(getCountProductsInCart());
 

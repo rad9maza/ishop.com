@@ -4,15 +4,7 @@ const AxiosService = axios.create({
   baseURL: "http://ishop.com/",
   responseType: "json"
 });
-// AxiosService.interceptors.request.use(request => {
-//   console.log('Starting Request', request);
-//   return request
-// });
-//
-// AxiosService.interceptors.response.use(response => {
-//   console.log('Response:', response);
-//   return response
-// });
+
 AxiosService.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
 

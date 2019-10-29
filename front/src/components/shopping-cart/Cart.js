@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -25,29 +25,26 @@ export default function Cart() {
 
   const [data, setData] = useState([]);
   const [value, setValue] = useState(false);
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     user: JSON.parse(localStorage.getItem("profileObj")),
-    token: localStorage.getItem("token"),
-    isAuthenticated: localStorage.getItem("isAuthenticated")
+    token: localStorage.getItem("token")
   });
 
   useEffect(() => {
-    console.log(data);
     async function fetchData() {
       const allProductIdsInCart = getAllProductIdsInCart();
       const { data } = await AxiosService.get(`/products/`, {
         params: { ids: [allProductIdsInCart] }
       });
       setData(data);
-      console.log(data);
     }
 
     fetchData();
   }, []);
 
   const handleChange = id => event => {
-    updateProductCountInCart(id, event.target.value);
-    setValue(!value);
+      updateProductCountInCart(id, event.target.value);
+      setValue(!value);
   };
 
   const handleDelete = id => event => {
@@ -70,9 +67,7 @@ export default function Cart() {
     });
     localStorage.setItem("token", data.data.access_token);
     localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
-    localStorage.setItem("isAuthenticated", true);
     setState({
-      isAuthenticated: true,
       user: response.profileObj,
       token: data.data.access_token
     });
@@ -94,7 +89,7 @@ export default function Cart() {
       <Typography variant="h3" gutterBottom>
         Cart is empty
       </Typography>
-    ) : !!state.isAuthenticated ? (
+    ) : !!state.user ? (
       <Button
         onClick={byeNow}
         variant="contained"

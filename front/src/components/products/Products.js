@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -21,14 +21,13 @@ export default function Products() {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     category: "",
     search: "",
     page: 1,
     pageLength: 4,
     totalRecords: 1
   });
-
   useEffect(() => {
     async function fetchData() {
       const { page, pageLength } = state;
@@ -38,22 +37,29 @@ export default function Products() {
       const [products, total] = data;
       setData(products);
       setState({ ...state, totalRecords: total });
-      const cat = await AxiosService.get("/categories");
-      setCategories(cat.data);
     }
     fetchData();
   }, []);
 
   useEffect(() => {
-    async function getFilteredData() {
-      const { page, pageLength, category, search } = state;
-      const { data } = await AxiosService.get("/products/", {
-        params: { page, pageLength, category, search }
-      });
-      const [products, total] = data;
-      setData(products);
-      setState({ ...state, totalRecords: total });
+    async function fetchCategories() {
+      const cat = await AxiosService.get("/categories");
+      setCategories(cat.data);
     }
+    fetchCategories();
+  }, []);
+
+  const getFilteredData = useCallback(async () => {
+    const { page, pageLength, category, search } = state;
+    const { data } = await AxiosService.get("/products/", {
+      params: { page, pageLength, category, search }
+    });
+    const [products, total] = data;
+    setData(products);
+    setState({ ...state, totalRecords: total });
+  }, [state.category, state.page, state.pageLength, state.search]);
+
+  useEffect(() => {
     getFilteredData();
   }, [state.category, state.page, state.pageLength, state.search]);
 

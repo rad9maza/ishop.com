@@ -10,22 +10,21 @@ export default class SignIn extends Component {
     this.state = {
       user: JSON.parse(localStorage.getItem("profileObj")),
       token: localStorage.getItem("token"),
-      isAuthenticated: localStorage.getItem("isAuthenticated")
     };
     this.googleResponse = this.googleResponse.bind(this);
   }
 
   logout = () => {
-    this.setState({ isAuthenticated: false, token: "", user: null });
+    this.setState({ token: "", user: null });
     localStorage.removeItem("profileObj");
     localStorage.removeItem("token");
-    localStorage.removeItem("isAuthenticated");
   };
   onFailure = error => {
     alert(error);
   };
 
   async googleResponse(response) {
+    console.log(response);
     const params = {
       grant_type: "social",
       client_id: 1,
@@ -42,14 +41,13 @@ export default class SignIn extends Component {
     localStorage.setItem("profileObj", JSON.stringify(response.profileObj));
     localStorage.setItem("isAuthenticated", true);
     this.setState({
-      isAuthenticated: true,
       user: response.profileObj,
       token: data.data.access_token
     });
   }
 
   render() {
-    let content = !!this.state.isAuthenticated ? (
+    let content = !!this.state.user ? (
       <div>
         <Typography variant="h3" gutterBottom>
           Authenticated

@@ -25,7 +25,7 @@ export default function Product(props) {
     }
   } = props;
 
-  const [data, setData] = useState("");
+  const [data, setData] = useState({});
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -44,9 +44,9 @@ export default function Product(props) {
 
   const { name, image, description } = data;
 
-  function handleAddProductToCart() {
-    addProductToCart(id);
-  }
+  const handleAddProductToCart = useCallback(() => {
+    addProductToCart(parseInt(id));
+  }, []);
 
   return (
     <Grid container justify="center">
