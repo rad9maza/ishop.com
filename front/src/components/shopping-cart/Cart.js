@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import GoogleLogin from "react-google-login";
 
 import AxiosService from "../../utils/axiosService";
 import {
@@ -17,7 +18,7 @@ import {
   getProductCountInCart,
   updateProductCountInCart
 } from "../../utils/shopingCartService";
-import GoogleLogin from "react-google-login";
+import {useAuth, useGoogleResponse} from "../../utils/customHooks";
 import {useStyles} from "./CartStyles";
 
 export default function Cart() {
@@ -25,10 +26,7 @@ export default function Cart() {
 
   const [data, setData] = useState([]);
   const [value, setValue] = useState(false);
-  const [state, setState] = useState({
-    user: JSON.parse(localStorage.getItem("user")),
-    token: localStorage.getItem("token")
-  });
+  const [state, setState] = useState(useAuth());
 
   useEffect(() => {
     async function fetchData() {
@@ -53,24 +51,7 @@ export default function Cart() {
   };
 
   async function googleResponse(response) {
-    const params = {
-      grant_type: "social",
-      client_id: 1,
-      client_secret: "IZvNu58EPugyPgiWVO5OyiX0VyxRhfSGSDAKPTBE",
-      provider: "google",
-      access_token: response.accessToken
-    };
-    const { data } = await AxiosService.post("/oauth/token", params, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    localStorage.setItem("token", data.access_token);
-    localStorage.setItem("user", JSON.stringify(response.profileObj));
-    setState({
-      user: response.profileObj,
-      token: data.access_token
-    });
+    setState(await useGoogleResponse(response));
   }
 
   async function byeNow() {
