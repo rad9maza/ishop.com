@@ -1,38 +1,28 @@
-import React, {Component} from 'react';
-// import logo from './logo.svg';
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { Route, Switch } from "react-router-dom";
+
 import Products from "../products/Products";
-// import SignIn from "../sign-in/SignIn";
-// import Product from "../product/Product";
-import PrimarySearchAppBar from "../primary-search-app-bar/PrimarySearchAppBar";
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Product from "../product/Product";
+import Footer from "./Footer";
+import PrimarySearchAppBar from "./PrimarySearchAppBar";
+import Cart from "../shopping-cart/Cart";
+import "./App.css";
+import SignIn from "../sign-in/SignIn";
 
-
-import './App.css';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="http://ishop.com/">
-                ishop
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
+export default function App() {
+  return (
+    <div className="App">
+      <CssBaseline />
+      <PrimarySearchAppBar />
+      <Switch>
+        <Route exact path="/" component={Products} />
+        <Route exact path="/products/:id" component={Product} />
+        <Route exact path="/products" component={Products} />
+        <Route exact path="/cart" component={Cart} />
+        <Route exact path="/profile" component={SignIn} />
+      </Switch>
+      <Footer />
+    </div>
+  );
 }
-
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <PrimarySearchAppBar />
-                <Products />
-                <Copyright />
-            </div>
-        );
-    }
-}
-
-export default App;

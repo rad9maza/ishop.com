@@ -1,38 +1,29 @@
 <?php
-
 namespace App\Models;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
+class User extends Authenticatable
 {
-    protected $fillable = ['name', 'surname', 'email', 'address'];
-
+    use HasApiTokens;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'provider',
+        'provider_id'
+    ];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
     public function offers()
     {
         return $this->hasMany('App\Models\Offer');
     }
 
-    public static function add($fields)
+    public function linkedSocialAccounts()
     {
-        $user = new static;
-        $user->fill($fields);
-        $user->password = bcrypt($fields['password']);
-        $user->save();
-
-        return $user;
-    }
-
-    public function edit($fields)
-    {
-        $this->fill($fields);
-        $this->password = bcrypt($fields['password']);
-        $this->save();
-    }
-
-    public function delete()
-    {
-        //todo deletion products. check db
-        $this->delete();
+        return $this->hasMany(LinkedSocialAccount::class);
     }
 }

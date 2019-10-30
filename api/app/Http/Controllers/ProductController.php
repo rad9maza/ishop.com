@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return Product::all();
+        if ($request->has('ids')) {
+            $ids = json_decode($request->ids[0], true);
+            return Product::findMany($ids);
+        }
+        return ProductService::getPaginatedAndFilteredProducts($request);
     }
 
     public function show($id)
@@ -36,5 +41,6 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return response('',204);}
+        return response('', 204);
+    }
 }

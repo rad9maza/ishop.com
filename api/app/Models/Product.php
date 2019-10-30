@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -11,12 +10,8 @@ class Product extends Model
 
     public function offers()
     {
-        return $this->belongsToMany('App\Models\Offer', 'offer_product', 'product_id', 'offer_id');
-    }
-
-    public function offerProducts()
-    {
-        return $this->hasMany('App\Models\OfferProduct');
+        return $this->belongsToMany('App\Models\Offer', 'offer_product', 'product_id', 'offer_id')
+            ->withPivot('count');
     }
 
     public function category()
